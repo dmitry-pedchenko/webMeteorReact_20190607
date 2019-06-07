@@ -1,34 +1,11 @@
-import { Template } from 'meteor/templating';
-import { Notes } from '../lib/collections.js';
 import './main.html';
+import React from 'react';
+import { render } from 'react-dom';
+import { Meteor } from 'meteor/meteor';
+import App from '../imports/ui/App.js';
 
-Template.body.helpers({
-	notes(){
-		return Notes.find({});
-	}
+Meteor.startup(()=>{
+	render(<App />, document.getElementById('main'));
 });
 
-
-Template.add.events({
-	'submit .add-form':function(){
-		event.preventDefault();
-		const target = event.target;
-		const text = target.text.value;
-		Notes.insert({
-			text,
-			ceratedAt: new Date()
-		});
-
-		target.text.value = '';
-		$('#addModal').modal('close');
-		return false;
-	}
-});
-
-Template.note.events({
-	'click .delete-note':function(){
-		Notes.remove(this._id);
-		return false;
-	}
-});
 
